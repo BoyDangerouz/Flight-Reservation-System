@@ -11,19 +11,13 @@ import javax.swing.JOptionPane;
 public class FlightTypeForm extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FlightTypeForm.class.getName());
-    /**
-     * Creates new form FlightTypeForm
-     */
-    public FlightTypeForm() {
+    private final String passengerName;
+    private final String email;
+    public FlightTypeForm(String passengerName, String email) {
+        this.passengerName = passengerName;
+        this.email = email;
         initComponents();
         setLocationRelativeTo(null);
-    }
-    private String passengerName;
-
-    public FlightTypeForm(String passengerName) {
-    this.passengerName = passengerName;
-    initComponents();
-    setLocationRelativeTo(null);
     }
 
     /**
@@ -88,7 +82,7 @@ public class FlightTypeForm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Please select a flight type.");
             return;
         }  
-        FlightDetailsForm detailsForm = new FlightDetailsForm(selectedType,passengerName);
+        FlightDetailsForm detailsForm = new FlightDetailsForm(selectedType,passengerName, email);
         detailsForm.setVisible(true);
         this.dispose();
         // TODO add your handling code here:
@@ -98,27 +92,7 @@ public class FlightTypeForm extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new FlightTypeForm().setVisible(true));
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;

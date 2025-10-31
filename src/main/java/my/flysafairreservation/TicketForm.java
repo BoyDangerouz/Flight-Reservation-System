@@ -4,6 +4,11 @@
  */
 package my.flysafairreservation;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author wahin
@@ -15,9 +20,10 @@ public class TicketForm extends javax.swing.JFrame {
     /**
      * Creates new form TicketForm
      */
-    public TicketForm(String flight, String seat, String departure, String arrival, String departureTime, String arrivalTime, String passengerName) {
+    public TicketForm(String flight, String seat, String departure, String arrival, String departureTime, String arrivalTime, String passengerName, String email) {
         initComponents();
         flightNoTF.setText(flight);
+        emailTF.setText(email);
         seatNoTF.setText(seat);
         departureTF.setText(departure);
         arrivalTF.setText(arrival);
@@ -31,6 +37,7 @@ public class TicketForm extends javax.swing.JFrame {
         seatNoTF.setEditable(false);
         departureTimeTF.setEditable(false);
         arrivalTimeTF.setEditable(false);
+        emailTF.setEditable(false);
         setLocationRelativeTo(null);
     }
 
@@ -66,6 +73,9 @@ public class TicketForm extends javax.swing.JFrame {
         passengerNameTF = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
+        emailTF = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        continueBtn = new javax.swing.JButton();
 
         jLabel14.setText("jLabel14");
 
@@ -81,14 +91,14 @@ public class TicketForm extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(255, 102, 255));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        jPanel2.add(seatNoTF, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 370, -1, 40));
+        jPanel2.add(seatNoTF, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 350, -1, 40));
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel9.setText("Seat No");
-        jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 370, 50, -1));
+        jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 350, 50, -1));
 
         jLabel18.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/seat 24.png"))); // NOI18N
-        jPanel2.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 390, 30, 20));
+        jPanel2.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 370, 30, 20));
         jPanel2.add(arrivalTF, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 190, 150, -1));
         jPanel2.add(arrivalTimeTF, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 220, 150, -1));
 
@@ -125,21 +135,87 @@ public class TicketForm extends javax.swing.JFrame {
         jLabel13.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
         jLabel13.setText("HVo8SW");
         jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 100, 60, -1));
-        jPanel2.add(passengerNameTF, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 280, 170, -1));
+        jPanel2.add(passengerNameTF, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 290, 150, -1));
 
         jLabel12.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel12.setText("Passenger Name");
-        jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 260, 100, -1));
+        jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 270, 100, -1));
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(242, 242, 242));
         jLabel8.setText("Check-in and baggage check-in close 40 minutes prior to depature");
         jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 320, 380, -1));
+        jPanel2.add(emailTF, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 280, 150, -1));
+
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel7.setText("Email");
+        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 260, 40, -1));
+
+        continueBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        continueBtn.setText("Confirm Booking");
+        continueBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                continueBtnActionPerformed(evt);
+            }
+        });
+        jPanel2.add(continueBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 410, 170, -1));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 450, 450));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void continueBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_continueBtnActionPerformed
+    String passengerName = passengerNameTF.getText();
+    String email = emailTF.getText();
+    String flight = flightNoTF.getText();
+    String seat = seatNoTF.getText();
+    String departure = departureTF.getText();
+    String arrival = arrivalTF.getText();
+    String departureTime = departureTimeTF.getText();
+    String arrivalTime = arrivalTimeTF.getText();
+
+    if (email == null || email.trim().isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Email is required.");
+    }
+     try (Connection conn = DatabaseConnector.connect()) {
+        if (conn == null) {
+            JOptionPane.showMessageDialog(this, "Database connection failed.");
+            return;
+        }
+
+        PreparedStatement checkStmt = conn.prepareStatement(
+            "SELECT * FROM reservations WHERE passenger_name = ? AND email = ?"
+        );
+        checkStmt.setString(1, passengerName);
+        checkStmt.setString(2, email);
+        ResultSet rs = checkStmt.executeQuery();
+
+        if (rs.next()) {
+            JOptionPane.showMessageDialog(this, "Reservation already exists for this passenger.");
+        }else {
+            PreparedStatement insertStmt = conn.prepareStatement(
+                "INSERT INTO reservations (passenger_name, email, flight, seat, departure, arrival, departure_time, arrival_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+            );
+            insertStmt.setString(1, passengerName);
+            insertStmt.setString(2, email);
+            insertStmt.setString(3, flight);
+            insertStmt.setString(4, seat);
+            insertStmt.setString(5, departure);
+            insertStmt.setString(6, arrival);
+            insertStmt.setString(7, departureTime);
+            insertStmt.setString(8, arrivalTime);
+            insertStmt.executeUpdate();
+            JOptionPane.showMessageDialog(this, "Reservation saved successfully!");
+        }
+
+        rs.close();
+        checkStmt.close();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Something went wrong while saving your reservation. Please try again.");
+            System.err.println("SQL Error: " + e.getMessage());
+        }
+    }//GEN-LAST:event_continueBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -150,8 +226,10 @@ public class TicketForm extends javax.swing.JFrame {
     private javax.swing.JTextField FligthIconTF;
     private javax.swing.JTextField arrivalTF;
     private javax.swing.JTextField arrivalTimeTF;
+    private javax.swing.JButton continueBtn;
     private javax.swing.JTextField departureTF;
     private javax.swing.JTextField departureTimeTF;
+    private javax.swing.JTextField emailTF;
     private javax.swing.JTextField flightNoTF;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -165,6 +243,7 @@ public class TicketForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel2;

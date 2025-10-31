@@ -4,6 +4,9 @@
  */
 package my.flysafairreservation;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import javax.swing.JOptionPane;
 
 /**
@@ -54,7 +57,7 @@ public class WelcomeForm extends javax.swing.JFrame {
         jLabel1.setText("Welcome To FlySafair Flight Reservation System");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 320, -1, -1));
 
-
+       
         jPanel1.add(EmailTF, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 200, 150, -1));
         jPanel1.add(NameTF, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 150, 150, -1));
 
@@ -100,13 +103,38 @@ public class WelcomeForm extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         if(NameTF.getText().trim().isEmpty() || EmailTF.getText().trim().isEmpty()){
             JOptionPane.showMessageDialog(null, "Please enter your Name and Email");
-            
-        }else{
-            String passengerName = NameTF.getText().trim();
-            FlightTypeForm flightTypeForm = new FlightTypeForm(passengerName);
-            flightTypeForm.setVisible(true);
-            this.dispose();
+        } else {
+        String passengerName = NameTF.getText().trim();
+        String email = EmailTF.getText().trim();
 
+        try (Connection conn = DatabaseConnector.connect()) {
+            if (conn == null) {
+                JOptionPane.showMessageDialog(this, "Database connection failed.");
+                return;
+            }
+
+            PreparedStatement checkStmt = conn.prepareStatement(
+                "SELECT * FROM reservations WHERE passenger_name = ? AND email = ?"
+            );
+            checkStmt.setString(1, passengerName);
+            checkStmt.setString(2, email);
+            ResultSet rs = checkStmt.executeQuery();
+
+            if (rs.next()) {
+                JOptionPane.showMessageDialog(this, "Reservation already exists for this passenger.");
+                return; // Stop here — don’t open FlightTypeForm
+            }
+
+            rs.close();
+            checkStmt.close();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error checking reservation.");
+            System.err.println("SQL Error: " + e.getMessage());
+            return;
+        }
+        FlightTypeForm flightTypeForm = new FlightTypeForm(passengerName, email);
+        flightTypeForm.setVisible(true);
+        this.dispose();
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

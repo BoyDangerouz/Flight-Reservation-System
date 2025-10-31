@@ -20,22 +20,23 @@ public class AvalibilityForm extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AvalibilityForm.class.getName());
     private String departure, arrival;
-    private String passengerName;
+    private String passengerName, email;
 
     private JTextField departureTF, arrivalTF;
     /**
      * Creates new form AvalibilityForm
      */
-    public AvalibilityForm(String departure, String arrival, String passengerName) {
+    public AvalibilityForm(String departure, String arrival, String passengerName, String email) {
         this.passengerName = passengerName;
         this.departure = departure;
         this.arrival = arrival;
+        this.email = email;
         
         initComponents();
 
     // 🔹 Set flight options
     flightComboBox.setModel(new DefaultComboBoxModel<>(new String[] {
-        "Flight204", "Flight3000", "FlightMzansi", "Flight64"
+        "Flight204", "Flight3000", "Flight78", "Flight64"
     }));
 
     // 🔹 Set seat options
@@ -238,7 +239,7 @@ public class AvalibilityForm extends javax.swing.JFrame {
     // 🔹 Launch TicketForm with all data
     TicketForm ticket = new TicketForm(
         flight, seat,
-        departure, arrival, departureTime, arrivalTime, passengerName
+        departure, arrival, departureTime, arrivalTime, passengerName, email
 
     );
     ticket.setVisible(true);

@@ -12,11 +12,12 @@ import javax.swing.DefaultComboBoxModel;
 public class FlightDetailsForm extends javax.swing.JFrame {
     
     private String flightType;
-    private String passengerName;
+    private String passengerName, email;
   
-    public FlightDetailsForm(String flightType, String passengerName) {
+    public FlightDetailsForm(String flightType, String passengerName, String email) {
         this.flightType = flightType;
         this.passengerName = passengerName;
+        this.email = email;
         initComponents();
         flightTypeLabel.setText("Flight Type: " + flightType);
         if (flightType.equals("Domestic")) {
@@ -106,7 +107,7 @@ public class FlightDetailsForm extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String selectedDeparture = (String) sourceComboBox.getSelectedItem();
         String selectedArrival = (String) destinationComboBox.getSelectedItem();
-        AvalibilityForm availability = new AvalibilityForm(selectedDeparture, selectedArrival, passengerName);
+        AvalibilityForm availability = new AvalibilityForm(selectedDeparture, selectedArrival, passengerName, email);
         availability.setVisible(true);
         dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
